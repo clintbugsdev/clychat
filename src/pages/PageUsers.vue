@@ -2,8 +2,8 @@
   <q-page class="flex q-pa-md">
     <q-list class="full-width" separator>
       <q-item
-        v-for="user in users"
-        :key="user.id"
+        v-for="(user, key) in users"
+        :key="key"
         class="q-my-sm"
         to="/chat"
         clickable
@@ -30,31 +30,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "PageUsers",
-  data() {
-    return {
-      users: [
-        {
-          id: 1,
-          name: "Ruddy Jedrzej",
-          letter: "R",
-          online: true
-        },
-        {
-          id: 2,
-          name: "Mallorie Alessandrini",
-          letter: "M",
-          online: false
-        },
-        {
-          id: 3,
-          name: "Elisabetta Wicklen",
-          letter: "E",
-          online: true
-        }
-      ]
-    };
+  computed: {
+    ...mapGetters("store", ["users"])
   }
 };
 </script>

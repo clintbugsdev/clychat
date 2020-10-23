@@ -23,11 +23,12 @@
     />
     <div class="row">
       <q-space />
-      <q-btn color="primary" :label="tab" type="submit"/>
+      <q-btn color="primary" :label="tab" type="submit" />
     </div>
   </q-form>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   props: ["tab"],
   data() {
@@ -40,13 +41,14 @@ export default {
     };
   },
   methods: {
-      submitForm(){
-          if (this.tab == 'login') {
-              console.log('login')
-          } else {
-              console.log('register')
-          }
+    ...mapActions("store", ["registerUser", "loginUser"]),
+    submitForm() {
+      if (this.tab == "login") {
+        this.loginUser(this.formData);
+      } else {
+        this.registerUser(this.formData);
       }
+    }
   }
 };
 </script>
