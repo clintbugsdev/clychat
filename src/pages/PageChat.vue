@@ -34,34 +34,28 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   name: "PageChat",
   data() {
     return {
-      newMessage: "",
-      messages: [
-        {
-          text: "Ola",
-          from: "me"
-        },
-        {
-          text: "Hello",
-          from: "them"
-        },
-        {
-          text: "Alright!",
-          from: "me"
-        }
-      ]
+      newMessage: ""
     };
   },
+  computed: {
+    ...mapState("store", ["messages"])
+  },
   methods: {
+    ...mapActions("store", ["firebaseGetMessages"]),
     sendMessage() {
       this.messages.push({
         text: this.newMessage,
         from: "me"
       });
     }
+  },
+  mounted() {
+    this.firebaseGetMessages(this.$route.params.otherUserId);
   }
 };
 </script>

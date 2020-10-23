@@ -2,7 +2,8 @@ import Vue from "vue";
 import { firebaseAuth, firebaseDb } from "boot/firebase";
 const state = {
   userDetails: {},
-  users: {}
+  users: {},
+  messages: {}
 };
 
 const mutations = {
@@ -14,6 +15,9 @@ const mutations = {
   },
   updateUser(state, payload) {
     Object.assign(state.users[payload.userId], payload.userDetails);
+  },
+  addMessage(state, payload) {
+    Vue.set(state.messages, payload.messageId, payload.messageDetails);
   }
 };
 
@@ -102,6 +106,19 @@ const actions = {
         userDetails
       });
     });
+  },
+  firebaseGetMessages({ commit, state }, otherUserId) {
+    let userId = state.userDetails.userId;
+    firebaseDb
+      .ref("chats/" + userId + "/" + otherUserId)
+      .on("child_added", snapshot => {
+        let messageId = snapshot.key;
+        let messageDetails = snapshot.val();
+        commit("addMessage", {
+          messageId,
+          messageDetails
+        });
+      });
   }
 };
 
