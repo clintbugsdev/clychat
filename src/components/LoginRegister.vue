@@ -23,7 +23,7 @@
     />
     <div class="row">
       <q-space />
-      <q-btn color="primary" :label="tab" type="submit" />
+      <q-btn color="primary" :label="tab" @click="submitForm" />
     </div>
   </q-form>
 </template>

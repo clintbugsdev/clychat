@@ -5,8 +5,8 @@
     </q-banner>
     <div class="q-pa-md column col justify-end">
       <q-chat-message
-        v-for="message in messages"
-        :key="message.text"
+        v-for="(message, key) in messages"
+        :key="key"
         :name="message.from == 'me' ? userDetails.name : otherUserDetails.name"
         :text="[message.text]"
         :sent="message.from == 'me' ? true : false"
@@ -14,7 +14,7 @@
     </div>
     <q-footer elevated>
       <q-toolbar>
-        <q-form @submit="sendMessage" class="full-width">
+        <q-form @submit="sendMessage" method="post" class="full-width">
           <q-input
             v-model="newMessage"
             bg-color="white"
@@ -24,7 +24,14 @@
             dense
           >
             <template v-slot:after>
-              <q-btn type="submit" round dense flat color="white" icon="send" />
+              <q-btn
+                @click="sendMessage"
+                round
+                dense
+                flat
+                color="white"
+                icon="send"
+              ></q-btn>
             </template>
           </q-input>
         </q-form>
@@ -50,12 +57,16 @@ export default {
   methods: {
     ...mapActions("store", [
       "firebaseGetMessages",
-      "firebaseStopGettingMessages"
+      "firebaseStopGettingMessages",
+      "firebaseSendMessage"
     ]),
     sendMessage() {
-      this.messages.push({
-        text: this.newMessage,
-        from: "me"
+      this.firebaseSendMessage({
+        message: {
+          text: this.newMessage,
+          from: "me"
+        },
+        otherUserId: this.$route.params.otherUserId
       });
     }
   },
