@@ -4,6 +4,7 @@
       <q-toolbar>
         <q-btn
           v-if="$route.fullPath.includes('/chat')"
+          class="absolute-left"
           v-go-back.single
           flat
           dense
